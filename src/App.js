@@ -19,7 +19,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
-            <Route path="view" element={<Taskview />} />
+            <Route path="view/:id" element={<Taskview />} />
             <Route path="task/edit" element={<Taskedit />} />
             <Route path="project/edit" element={<Projectedit />} />
             <Route path="*" element={<Notfound />} />

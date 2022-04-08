@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Loader from './pages/Loader'
 
 export default class About extends Component {
   render() {

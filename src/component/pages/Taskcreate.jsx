@@ -1,27 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Loader from './Loader';
 import Swal from 'sweetalert2';
 
-const Projectedit = () => {
+const Taskcreate = () => {
 
-    const { id } = useParams();
-    const navigate  = useNavigate();
-    const [pro, setPro] = useState([]);
-    const [loader, setLoader] = useState(false);
+    const navigate = useNavigate();
+    const [projects, setProject] = useState([]);
     const [errorList, setError] = useState([])
     const [inputField, setInputField] = useState({
-        name: '',
+        project: '',
+        title: '',
         description: ''
     })
 
     useEffect(() => {
-        setLoader(true)
-        axios.get(`http://127.0.0.1:8000/api/project/`+id+`/edit/`)
+        axios.get(`http://127.0.0.1:8000/api/project`)
             .then(res => {
-                setPro(res.data.data)
-                setLoader(false)
+                setProject(res.data.data)
             });
     }, [])
 
@@ -34,8 +30,9 @@ const Projectedit = () => {
 
     const submitButton = (e) => {
         e.preventDefault();
-        axios.put(`project/`+id, {
-            name: inputField.name,
+        axios.post('task/store', {
+            project: inputField.project,
+            title: inputField.title,
             description: inputField.description
         })
             .then(res => {
@@ -44,9 +41,14 @@ const Projectedit = () => {
                         title: 'Success',
                         html: res.data.message,
                         icon: 'success'
-                      })
-                    navigate('/')
-                    errorList([])
+                    })
+                    setInputField({
+                        project: '',
+                        title: '',
+                        description: ''
+                    })
+                    setError([])
+                    navigate('/task/create')
                 } else if (res.data.status === 422) {
                     setError(res.data.errors)
                 }
@@ -57,24 +59,34 @@ const Projectedit = () => {
             });
     }
 
+
+
     return (
         <div className='container my-5'>
             <div className="row">
                 <div className="col-md-8 offset-md-2">
                     <div className="card">
                         <div className="card-header d-flex justify-content-between">
-                            <h4 className='card-title'>Edit Project</h4>
+                            <h4 className='card-title'>Create Task</h4>
                         </div>
                         <div className="card-body">
                             <form action="">
                                 <div className="mb-3">
-                                    <label className='mb-1'>Name</label>
-                                    <input type="text" name='name' onChange={inputsHandler} className='form-control' value={inputField.name} />
-                                    <span className="text-danger">{errorList.name}</span>
+                                    <select name='project' onChange={inputsHandler} value={inputField.project} className="form-control">
+                                        {projects.map((pro, index) =>
+                                            <option key={index} value={pro.id}>{pro.name}</option>
+                                        )}
+                                    </select>
+                                    <span className="text-danger">{errorList.project}</span>
+                                </div>
+                                <div className="mb-3">
+                                    <label className='mb-1'>Title</label>
+                                    <input type="text" onChange={inputsHandler} value={inputField.title} name='title' placeholder='Enter your task title' className='form-control' />
+                                    <span className="text-danger">{errorList.title}</span>
                                 </div>
                                 <div className="mb-3">
                                     <label className='mb-1'>Description</label>
-                                    <textarea rows="7" name='description' onChange={inputsHandler} value={inputField.description} className="form-control">
+                                    <textarea rows="7" onChange={inputsHandler} value={inputField.description} name='description' placeholder='Enter your task description' className="form-control">
                                     </textarea>
                                     <span className="text-danger">{errorList.description}</span>
                                 </div>
@@ -82,7 +94,7 @@ const Projectedit = () => {
                         </div>
                         <div className="card-footer text-end">
                             <Link className='btn btn-warning me-2' to={`/home`}>Back</Link>
-                            <button onClick={submitButton} className='btn btn-primary' to={`/`}>Update</button>
+                            <button onClick={submitButton} className='btn btn-primary' to={`/`}>Save</button>
                         </div>
                     </div>
                 </div>
@@ -90,4 +102,4 @@ const Projectedit = () => {
         </div>
     )
 }
-export default Projectedit;
+export default Taskcreate;

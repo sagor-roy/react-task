@@ -1,7 +1,12 @@
+import axios from 'axios';
 import React from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
+axios.defaults.headers.common['Authorization']='Bearer '+ localStorage.getItem('_token')
+
 
 const root = createRoot(document.getElementById("root"))
 root.render( 

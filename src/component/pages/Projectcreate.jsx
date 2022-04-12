@@ -10,9 +10,9 @@ const Projectcreate = () => {
     const [errorList, setError] = useState([])
     const [inputField, setInputField] = useState({
         name: '',
-        description: '',
-        img: ''
+        description: ''
     })
+    const [image,setImgField]=useState([])
 
     const inputsHandler = (e) => {
         setInputField((inputField) => ({
@@ -23,7 +23,7 @@ const Projectcreate = () => {
 
     // image onchange hander
     const handleChange = (e) => {
-        setInputField({
+        setImgField({
             img: e.target.files[0]
         })
     }
@@ -34,7 +34,7 @@ const Projectcreate = () => {
         const data = new FormData();
         data.append('name', inputField.name)
         data.append('description', inputField.description)
-        data.append('img', inputField.img)
+        data.append('img', image.img)
 
         axios({
             method: 'post',
@@ -103,8 +103,8 @@ const Projectcreate = () => {
                                     <button type='submit' className='btn btn-primary'>Save</button>
                                 )}
                                 {loader && (
-                                    <button class="btn btn-primary" type="button" disabled>
-                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    <button className="btn btn-primary" type="button" disabled>
+                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         Loading...
                                     </button>
                                 )}

@@ -1,27 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import Loader from './Loader';
 import Swal from 'sweetalert2';
 
 const Projectedit = () => {
 
     const { id } = useParams();
     const navigate  = useNavigate();
-    const [pro, setPro] = useState([]);
-    const [loader, setLoader] = useState(false);
     const [errorList, setError] = useState([])
-    const [inputField, setInputField] = useState({
-        name: '',
-        description: ''
-    })
+    const [inputField, setInputField] = useState([])
+
 
     useEffect(() => {
-        setLoader(true)
         axios.get(`http://127.0.0.1:8000/api/project/`+id+`/edit/`)
             .then(res => {
-                setPro(res.data.data)
-                setLoader(false)
+                setInputField(res.data.data)
             });
     }, [])
 
@@ -36,7 +29,7 @@ const Projectedit = () => {
         e.preventDefault();
         axios.put(`project/`+id, {
             name: inputField.name,
-            description: inputField.description
+            description: inputField.desc
         })
             .then(res => {
                 if (res.data.status === 200) {
@@ -45,7 +38,7 @@ const Projectedit = () => {
                         html: res.data.message,
                         icon: 'success'
                       })
-                    navigate('/')
+                    navigate('/home')
                     errorList([])
                 } else if (res.data.status === 422) {
                     setError(res.data.errors)
@@ -69,12 +62,12 @@ const Projectedit = () => {
                             <form action="">
                                 <div className="mb-3">
                                     <label className='mb-1'>Name</label>
-                                    <input type="text" name='name' onChange={inputsHandler} className='form-control' value={inputField.name} />
+                                    <input type="text" name='name' onChange={inputsHandler} className='form-control' value={inputField.name || ''} />
                                     <span className="text-danger">{errorList.name}</span>
                                 </div>
                                 <div className="mb-3">
                                     <label className='mb-1'>Description</label>
-                                    <textarea rows="7" name='description' onChange={inputsHandler} value={inputField.description} className="form-control">
+                                    <textarea rows="7" name='description' onChange={inputsHandler} value={inputField.desc || ''} className="form-control">
                                     </textarea>
                                     <span className="text-danger">{errorList.description}</span>
                                 </div>

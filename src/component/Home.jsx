@@ -15,7 +15,7 @@ export default class Home extends Component {
 
     componentDidMount() {
         const user = JSON.parse(localStorage.getItem('user'))
-        this.setState({user:user.name})
+        this.setState({user:user.user.name})
         this.setState({ isLoading: true })
         axios({
             method:'get',
@@ -86,7 +86,7 @@ export default class Home extends Component {
                                     <p className='mt-3'>{pro.desc}</p>
                                     <div className="group-btn mt-4">
                                         <Link to={`/view/${pro.id}`} className='btn btn-primary me-2'>view</Link>
-                                        <Link to={`project/${pro.id}/edit`} className='btn btn-success me-2'>edit</Link>
+                                        <Link to={`/project/${pro.id}/edit`} className='btn btn-success me-2'>edit</Link>
                                         <button onClick={() => this.projectDelete(pro.id)} className='btn btn-primary btn-danger me-2'>delete</button>
                                     </div>
                                 </div>

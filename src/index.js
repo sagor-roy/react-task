@@ -3,6 +3,7 @@ import React from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import './assets/bootstrap.min.css';
 
 axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
 const token = JSON.parse(localStorage.getItem('user'))

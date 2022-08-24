@@ -15,7 +15,7 @@ const Taskcreate = () => {
     })
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/api/project`)
+        axios.get(`project`)
             .then(res => {
                 setProject(res.data.data)
             });

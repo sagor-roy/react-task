@@ -12,7 +12,7 @@ const Projectedit = () => {
 
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/api/project/`+id+`/edit/`)
+        axios.get(`project/`+id+`/edit/`)
             .then(res => {
                 setInputField(res.data.data)
             });

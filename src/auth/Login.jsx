@@ -6,6 +6,7 @@ export default function Login() {
 
   const navigate = useNavigate();
   const [errorList, setError] = useState([])
+  const [loader, setLoader] = useState(false)
   const [warning, setSetwarning] = useState()
   const [inputField, setInputField] = useState({
     email: '',
@@ -21,6 +22,7 @@ export default function Login() {
 
   const submitForm = (e) => {
     e.preventDefault();
+    setLoader(true)
     const data = {
       email: inputField.email,
       password: inputField.password
@@ -33,13 +35,16 @@ export default function Login() {
       if (res.data.status == 200) {
         localStorage.setItem('user', JSON.stringify(res.data))
         setError([])
+        setLoader(false)
         navigate('/home')
       } else if (res.data.status == 422) {
         setError(res.data.errors)
         setSetwarning()
+        setLoader(false)
       } else if (res.data.status == 'error') {
         setSetwarning(res.data.message)
         setError([])
+        setLoader(false)
       }
     }).catch(error => {
       console.log(error)
@@ -67,7 +72,15 @@ export default function Login() {
                 <input type="password" onChange={inputsHandler} name='password' value={inputField.password} className="form-control" />
                 <span className="text-danger">{errorList.password}</span>
               </div>
-              <button type='submit' className="btn btn-primary">Login</button>
+              {!loader && (
+                <button type='submit' className='btn btn-primary'>Login</button>
+              )}
+              {loader && (
+                <button className="btn btn-primary" type="button" disabled>
+                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  Loading...
+                </button>
+              )}
             </form>
           </div>
         </div>

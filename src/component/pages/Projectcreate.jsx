@@ -12,7 +12,7 @@ const Projectcreate = () => {
         name: '',
         description: ''
     })
-    const [image,setImgField]=useState([])
+    const [image, setImgField] = useState([])
 
     const inputsHandler = (e) => {
         setInputField((inputField) => ({
@@ -60,6 +60,7 @@ const Projectcreate = () => {
                 } else if (res.data.status === 422) {
                     setLoader(false)
                     setError(res.data.errors)
+                    console.log(res.data.errors)
                 }
             })
             .catch(error => {

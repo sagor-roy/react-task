@@ -10,16 +10,16 @@ export default class Home extends Component {
     state = {
         project: [],
         isLoading: false,
-        user:''
+        user: ''
     }
 
     componentDidMount() {
         const user = JSON.parse(localStorage.getItem('user'))
-        this.setState({user:user.user.name})
+        this.setState({ user: user.user.name })
         this.setState({ isLoading: true })
         axios({
-            method:'get',
-            url:'project'
+            method: 'get',
+            url: 'project'
         })
             .then(res => {
                 const project = res.data.data;
@@ -39,7 +39,7 @@ export default class Home extends Component {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`http://127.0.0.1:8000/api/project/` + value)
+                axios.delete(`project/` + value)
                     .then(res => {
                         Swal.fire(
                             'Deleted!',
@@ -66,7 +66,7 @@ export default class Home extends Component {
                                 <h4 className='card-title text-white'>{this.state.user}</h4>
                                 <div>
                                     <Link className="btn btn-primary me-2" to="/project/create">Create Project</Link>
-                                    <Link className="btn btn-warning" to="task/create">Create Task</Link>
+                                    <Link className="btn btn-warning" to="/task/create">Create Task</Link>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +82,7 @@ export default class Home extends Component {
                                     <h4 className='card-title'>{pro.name} <span className='badge bg-primary'>{pro.task.length}</span></h4>
                                 </div>
                                 <div className="card-body">
-                                    <img className='img-fluid w-100' src={pro.img} alt={pro.name} />
+                                    <img className='img-fluid w-100' src={'http://127.0.0.1:8000/' + pro.img} alt={pro.name} />
                                     <p className='mt-3'>{pro.desc}</p>
                                     <div className="group-btn mt-4">
                                         <Link to={`/view/${pro.id}`} className='btn btn-primary me-2'>view</Link>
